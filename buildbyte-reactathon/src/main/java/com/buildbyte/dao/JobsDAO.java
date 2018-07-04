@@ -81,7 +81,12 @@ public class JobsDAO {
 		    			System.out.println(interviewDate);
 		    			appliedJobDetailsDTO.setInterviewDate(sdf.format(interviewDate));
 		    		}
+		    		appliedJobDetailsDTO.setInterviewType(appliedDoc.getString("interviewType"));
 		    		appliedJobDetailsDTO.setInterviewLocation(appliedDoc.getString("interviewLocation"));
+		    		appliedJobDetailsDTO.setJobStatus(appliedDoc.getString("jobStatus"));
+		    		appliedJobDetailsDTO.setHmFeedback(appliedDoc.getString("hmFeedback"));
+		    		appliedJobDetailsDTO.setCanFeedback(appliedDoc.getString("canFeedback"));
+		    		
 		    		appliedJobDetailsList.add(appliedJobDetailsDTO);
 	    		}
 	    	}
