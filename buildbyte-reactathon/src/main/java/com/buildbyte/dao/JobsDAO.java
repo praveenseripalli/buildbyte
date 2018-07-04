@@ -2,6 +2,7 @@ package com.buildbyte.dao;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.bson.Document;
@@ -61,13 +62,28 @@ public class JobsDAO {
         	}
     		Bson filter = new Document("appliedJobs.userName",userName);
 	    	List<Document> appliedJobsList = jobsCollection.find(filter).into(new ArrayList<Document>());
-	    	
+	    	System.out.println(appliedJobsList.size());
 	    	for(Document doc : appliedJobsList){
-	    		AppliedJobDetailsDTO appliedJobDetailsDTO = new AppliedJobDetailsDTO();
-	    		appliedJobDetailsDTO.setUserName(doc.getString("userName"));
-	    		appliedJobDetailsDTO.setUserEmail(doc.getString("userEmail"));
-	    		
-	    		appliedJobDetailsList.add(appliedJobDetailsDTO);
+	    		List<Document> appliedJobs = (List<Document>)doc.get("appliedJobs");
+	    		for(Document appliedDoc : appliedJobs) {
+	    			if(!userName.equals(appliedDoc.getString("userName"))) {
+	    				continue;
+	    			}
+		    		AppliedJobDetailsDTO appliedJobDetailsDTO = new AppliedJobDetailsDTO();
+		    		appliedJobDetailsDTO.setUserName(appliedDoc.getString("userName"));
+		    		appliedJobDetailsDTO.setUserEmail(appliedDoc.getString("userEmail"));
+		    		Date appliedDate = appliedDoc.getDate("appliedDate");
+		    		if(appliedDate != null) {
+		    			appliedJobDetailsDTO.setAppliedDate(sdf.format(appliedDate));
+		    		}
+		    		Date interviewDate = appliedDoc.getDate("interviewDate");
+		    		if(interviewDate != null) {
+		    			System.out.println(interviewDate);
+		    			appliedJobDetailsDTO.setInterviewDate(sdf.format(interviewDate));
+		    		}
+		    		appliedJobDetailsDTO.setInterviewLocation(appliedDoc.getString("interviewLocation"));
+		    		appliedJobDetailsList.add(appliedJobDetailsDTO);
+	    		}
 	    	}
 	    	jobDTO.setStatus("SUCCESS");
     	}catch(Exception e){
