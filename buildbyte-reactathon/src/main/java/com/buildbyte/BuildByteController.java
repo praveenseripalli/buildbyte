@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.buildbyte.dao.JobsDAO;
 import com.buildbyte.dao.UserDAO;
+import com.buildbyte.dto.AppliedJobDetailsDTO;
 import com.buildbyte.dto.JobDTO;
 import com.buildbyte.dto.JobDetailsDTO;
 import com.buildbyte.dto.UserRequestDTO;
@@ -38,6 +39,7 @@ public class BuildByteController {
     }
 	
 	@RequestMapping(method = RequestMethod.POST, value="/reactathon/vzcareer/login")
+
 	@ResponseBody
 	UserResponseDTO login(@RequestBody UserRequestDTO userRequest) {
       return userDAO.validateLogin(userRequest);
@@ -52,6 +54,20 @@ public class BuildByteController {
 	@ResponseBody
 	JobDTO getAppliedJobs(@RequestBody UserRequestDTO userRequest) {
       return jobsDAO.getAppliedJobsDetails(userRequest);
+    }
+	
+	@RequestMapping(method = RequestMethod.POST, value="/reactathon/vzcareer/applyJob")
+	@ResponseBody
+	JobDTO applyJob(@RequestBody AppliedJobDetailsDTO jobDetailsRequest) {
+		String email = userDAO.getUserEmail(jobDetailsRequest.getUserName());
+		jobDetailsRequest.setUserEmail(email);
+		return jobsDAO.insertAppliedJobDetails(jobDetailsRequest);
+    }
+	
+	@RequestMapping(method = RequestMethod.POST, value="/reactathon/vzcareer/updateFeedback")
+	@ResponseBody
+	JobDTO updateFeedback(@RequestBody AppliedJobDetailsDTO jobDetailsRequest) {
+		return jobsDAO.updateFeedback(jobDetailsRequest.getJobId(), jobDetailsRequest.getUserName(), jobDetailsRequest.getCanFeedback());
     }
 	
 	/*private JobDTO getJobDetails(){

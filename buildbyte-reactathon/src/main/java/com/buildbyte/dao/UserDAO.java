@@ -64,5 +64,15 @@ public class UserDAO {
         res.setStatus("SUCCESS");
         return res;
     }
+	
+	public String getUserEmail(String userName) {
+        Document user = usersCollection.find(Filters.eq("_id", userName)).first();
+
+        if (user == null) {
+            System.out.println("User not in database");
+            return "";
+        }
+        return user.getString("email");
+    }
 
 }

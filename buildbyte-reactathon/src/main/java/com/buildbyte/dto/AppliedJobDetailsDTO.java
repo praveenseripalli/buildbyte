@@ -2,6 +2,19 @@ package com.buildbyte.dto;
 
 public class AppliedJobDetailsDTO {
 	
+	private String jobId;
+	public String getJobId() {
+		return jobId;
+	}
+
+
+
+	public void setJobId(String jobId) {
+		this.jobId = jobId;
+	}
+
+
+
 	private String userName;
 	private String userEmail;
 	private String appliedDate;

@@ -2,6 +2,7 @@ package com.buildbyte.dao;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -95,6 +96,43 @@ public class JobsDAO {
     		e.printStackTrace();
     		jobDTO.setStatus("System error occured. Please contact Administrator");
     	}
+    	return jobDTO;
+    }
+    
+    public JobDTO insertAppliedJobDetails(AppliedJobDetailsDTO req){
+    	JobDTO jobDTO = new JobDTO();
+    	try{
+    		Date appliedDate = Calendar.getInstance().getTime();
+    		Calendar c = Calendar.getInstance();
+    		c.add(Calendar.DAY_OF_WEEK, 5);
+    		Date interviewDate = c.getTime();
+    		String jobStatus = "Interview Scheduled";
+    		jobsCollection.updateOne(new Document("_id", req.getJobId()), new Document("$push",
+    				new Document("appliedJobs",new Document("userName",req.getUserName())
+    						.append("userEmail", req.getUserEmail()).append("appliedDate", appliedDate)
+    						.append("interviewType", req.getInterviewType()).append("interviewDate", interviewDate)
+    						.append("interviewLocation", req.getInterviewLocation())
+    						.append("jobStatus", jobStatus).append("hmFeedback", "")
+    						.append("canFeedback", ""))));
+    		jobDTO.setStatus("SUCCESS");
+    	}catch(Exception e){
+    		e.printStackTrace();
+    		jobDTO.setStatus("System error occured. Please contact Administrator");
+    	}
+    	
+    	return jobDTO;
+    }
+    
+    public JobDTO updateFeedback(String jobId, String userName, String feedback){
+    	JobDTO jobDTO = new JobDTO();
+    	try{
+    		jobsCollection.updateOne(new Document("_id", jobId).append("appliedJobs.userName", userName), new Document("$set", new Document("appliedJobs.$.canFeedback",feedback)));
+    		jobDTO.setStatus("SUCCESS");
+    	}catch(Exception e){
+    		e.printStackTrace();
+    		jobDTO.setStatus("System error occured. Please contact Administrator");
+    	}
+    	
     	return jobDTO;
     }
 
