@@ -42,18 +42,13 @@ constructor(props){
 handleClick(event){
 	 var apiBaseUrl = "http://localhost:4000/api/";
 	 var self = this;
-	 var payload={
-		 "email":this.state.username,
-		 "password":this.state.password
-	 }
-	 /*axios.post(apiBaseUrl+'login', payload)
+	 var payload={"userName": "Ravi", "password" : "vz01#"}
+	 axios.post("http://localhost:8090/reactathon/vzcareer/login", payload)
 	 .then(function (response) {
 		console.log(response);
 	 if(response.data.code == 200){
 		 console.log("Login successfull");
-		 var uploadScreen=[];
-		 uploadScreen.push(<UploadScreen appContext={self.props.appContext}/>)
-		 self.props.appContext.setState({loginPage:[],uploadScreen:uploadScreen})
+		 alert("Success");
 	 }
 	 else if(response.data.code == 204){
 		 console.log("Username password do not match");
@@ -66,8 +61,8 @@ handleClick(event){
 	 })
 	 .catch(function (error) {
 		console.log(error);
-	});*/
-	this.context.history.push(event.currentTarget.getAttribute('href'));
+	});
+	//this.context.history.push(event.currentTarget.getAttribute('href'));
  } 
 render() {
 	if(document && document.getElementById("123") && document.getElementById("123").firstChild){
@@ -97,7 +92,7 @@ render() {
                onChange = {(event,newValue) => this.setState({password:newValue})}
                />
              <br/>
-             <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)} href = {'/Main'}/>
+             <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)} />
 			 <RaisedButton label="Sign Up" primary={true} style={style} onClick={(event) => this.register(event)}/>
 	 
          </div>
