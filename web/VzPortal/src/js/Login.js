@@ -8,7 +8,7 @@ import NavBar from './NavBar';
 import CoursesList from './CoursesList';
 import SearchJobContainer from './SearchJobContainer';
 import Main from './Main'
-
+import axios from 'axios';
 
 type Props = {
   history: any
